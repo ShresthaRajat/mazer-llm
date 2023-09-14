@@ -1,0 +1,48 @@
+namespace: mazer-llm
+mazer-llm:
+  defines: runnable
+  metadata:
+    name: mazer-llm
+    description: A web application that generates mazes based on a seed and size.
+    icon: https://emojiapi.dev/api/v1/cyclone.svg
+  containers:
+    mazer-llm:
+      build: .
+  services:
+    http:
+      container: mazer-llm
+      port: 80
+      host-port: 80
+      publish: false
+      protocol: TCP
+      description: Port for communicating with http server
+  connections:
+    mongodb:
+      target: mongodb/mongodb
+      service: mongodb
+  variables:
+    debug:
+      env: DEBUG
+      type: boolean
+      description: Debug mode setting for the app
+      value: None
+    secret-key:
+      env: SECRET_KEY
+      type: string
+      description: Flask application's secret key
+      value: '!!!SETME-USE-SECRETS!!!'
+    mongo-initdb-root-username:
+      env: MONGO_INITDB_ROOT_USERNAME
+      type: string
+      description: Username for the MongoDB
+      value: '!!!SETME-USE-SECRETS!!!'
+    mongo-initdb-root-password:
+      env: MONGO_INITDB_ROOT_PASSWORD
+      type: string
+      description: Password for the MongoDB
+      value: '!!!SETME-USE-SECRETS!!!'
+    mongo-ip:
+      env: MONGO_IP
+      type: string
+      description: MongoDB's IP Address
+      value: <- connection-hostname("mongodb")
